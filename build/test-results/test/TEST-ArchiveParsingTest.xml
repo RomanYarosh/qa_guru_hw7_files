@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ArchiveParsingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-12-07T15:10:38.365Z" hostname="WIN-89TE62D6FGF" time="1.15">
+<testsuite name="ArchiveParsingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-12-07T15:24:26.316Z" hostname="WIN-89TE62D6FGF" time="1.394">
   <properties/>
-  <testcase name="Чтение файлов из архива" classname="ArchiveParsingTest" time="1.15"/>
+  <testcase name="Чтение файлов из архива" classname="ArchiveParsingTest" time="1.394"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[ERROR StatusLogger Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
 ]]></system-err>

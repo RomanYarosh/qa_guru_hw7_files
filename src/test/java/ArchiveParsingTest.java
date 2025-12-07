@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArchiveParsingTest {
 
-    private final ClassLoader cl = ArchiveParsingTest.class.getClassLoader();
+    public final ClassLoader cl = ArchiveParsingTest.class.getClassLoader();
 
     @Test
     @DisplayName("Чтение файлов из архива")
