@@ -1,0 +1,17 @@
+{
+  "orderId": 7741,
+  "customerName": "Dmitry Testov",
+  "isDelivered": false,
+  "items": [
+    {
+      "name": "MacBook Pro 16",
+      "price": 2500,
+      "quantity": 1
+    },
+    {
+      "name": "Magic Mouse",
+      "price": 99.99,
+      "quantity": 2
+    }
+  ]
+}
