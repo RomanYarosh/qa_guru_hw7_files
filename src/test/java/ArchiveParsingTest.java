@@ -18,33 +18,61 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArchiveParsingTest {
 
-    public final ClassLoader cl = ArchiveParsingTest.class.getClassLoader();
+    private final ClassLoader cl = ArchiveParsingTest.class.getClassLoader();
+    private static final String ZIP_NAME = "files.zip";
+
+    private File getZipFileFromResources() throws Exception {
+        URL resource = cl.getResource(ZIP_NAME);
+        Assertions.assertNotNull(resource, "Файл " + ZIP_NAME + " не найден в resources!");
+        return new File(resource.toURI());
+    }
 
     @Test
-    @DisplayName("Чтение файлов из архива")
-    void parseZipFileFromResourcesTest() throws Exception {
-        URL resource = cl.getResource("files.zip");
-        Assertions.assertNotNull(resource, "Файл files.zip не найден в resources!");
-        File zipFileOnDisk = new File(resource.toURI());
-        try (ZipFile zipFile = new ZipFile(zipFileOnDisk)) {
+    @DisplayName("Проверка контента PDF файла внутри архива")
+    void parsePdfFromZipTest() throws Exception {
+        try (ZipFile zipFile = new ZipFile(getZipFileFromResources())) {
+            String fileName = "test.pdf";
+            ZipEntry entry = zipFile.getEntry(fileName);
 
-            ZipEntry pdfEntry = zipFile.getEntry("test.pdf");
-            try (InputStream stream = zipFile.getInputStream(pdfEntry)) {
+            Assertions.assertNotNull(entry, "Файл " + fileName + " не найден в архиве " + ZIP_NAME);
+
+            try (InputStream stream = zipFile.getInputStream(entry)) {
                 PDF pdf = new PDF(stream);
                 assertThat(pdf.text).contains("Text inside PDF");
             }
+        }
+    }
 
-            ZipEntry csvEntry = zipFile.getEntry("test.csv");
-            try (InputStream stream = zipFile.getInputStream(csvEntry);
+    @Test
+    @DisplayName("Проверка контента CSV файла внутри архива")
+    void parseCsvFromZipTest() throws Exception {
+        try (ZipFile zipFile = new ZipFile(getZipFileFromResources())) {
+            String fileName = "test.csv";
+            ZipEntry entry = zipFile.getEntry(fileName);
+
+            Assertions.assertNotNull(entry, "Файл " + fileName + " не найден в архиве " + ZIP_NAME);
+
+            try (InputStream stream = zipFile.getInputStream(entry);
                  CSVReader reader = new CSVReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+
                 List<String[]> csvContent = reader.readAll();
                 assertThat(csvContent).hasSizeGreaterThan(0);
                 assertThat(csvContent.get(0)).contains("Header1");
                 assertThat(csvContent.get(1)).contains("Value1");
             }
+        }
+    }
 
-            ZipEntry xlsxEntry = zipFile.getEntry("test.xlsx");
-            try (InputStream stream = zipFile.getInputStream(xlsxEntry)) {
+    @Test
+    @DisplayName("Проверка контента XLSX файла внутри архива")
+    void parseXlsxFromZipTest() throws Exception {
+        try (ZipFile zipFile = new ZipFile(getZipFileFromResources())) {
+            String fileName = "test.xlsx";
+            ZipEntry entry = zipFile.getEntry(fileName);
+
+            Assertions.assertNotNull(entry, "Файл " + fileName + " не найден в архиве " + ZIP_NAME);
+
+            try (InputStream stream = zipFile.getInputStream(entry)) {
                 XSSFWorkbook workbook = new XSSFWorkbook(stream);
                 String cellValue = workbook.getSheetAt(0)
                         .getRow(1)
